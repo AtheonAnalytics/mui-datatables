@@ -5,6 +5,7 @@ import MuiTableBody from '@material-ui/core/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
+import TableExpandCell from './TableExpandCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
@@ -205,9 +206,12 @@ class TableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, toggleExpandRow, options } = this.props;
+    const { classes, columns, toggleExpandRow, options, expandText, noDataIndicator } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
+    let columnCount = visibleColCnt;
+    if (options.selectableRows !== 'none') columnCount += 1;
+    if (options.expandableRows) columnCount += 1;
 
     return (
       <MuiTableBody>
@@ -233,15 +237,9 @@ class TableBody extends React.Component {
                       index: this.getRowIndex(rowIndex),
                       dataIndex: dataIndex,
                     })}
-                    onExpand={toggleExpandRow.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
                     fixedHeader={options.fixedHeader}
                     checked={this.isRowSelected(dataIndex)}
-                    expandableOn={options.expandableRows}
                     selectableOn={options.selectableRows}
-                    isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}
                     id={'MUIDataTableSelectCell-' + dataIndex}
                   />
@@ -259,25 +257,39 @@ class TableBody extends React.Component {
                           columnHeader={columns[columnIndex].label}
                           print={columns[columnIndex].print}
                           options={options}
-                          key={columnIndex}>
+                          bodyStyles={columns[columnIndex].bodyStyles || {}}
+                          key={columnIndex}
+                        >
                           {column}
                         </TableBodyCell>
                       ),
                   )}
+                  <TableExpandCell
+                    onExpand={toggleExpandRow.bind(null, {
+                      index: this.getRowIndex(rowIndex),
+                      dataIndex: dataIndex,
+                    })}
+                    fixedHeader={options.fixedHeader}
+                    expandableOn={options.expandableRows}
+                    isRowExpanded={this.isRowExpanded(dataIndex)}
+                    isRowExpandable={this.isRowExpandable(dataIndex)}
+                    id={'MUIDataTableExpandCell-' + dataIndex}
+                    expandText={expandText}
+                  />
                 </TableBodyRow>
-                {this.isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
+                {this.isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex }, columnCount)}
               </React.Fragment>
             );
           })
         ) : (
           <TableBodyRow options={options}>
             <TableBodyCell
-              colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
+              colSpan={columnCount}
               options={options}
               colIndex={0}
               rowIndex={0}>
               <Typography variant="subtitle1" className={classes.emptyTitle}>
-                {options.textLabels.body.noMatch}
+                {noDataIndicator || options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>
           </TableBodyRow>

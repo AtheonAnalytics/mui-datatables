@@ -47,6 +47,7 @@ class TableBodyCell extends React.Component {
       rowIndex,
       className,
       print,
+      bodyStyles,
       ...otherProps
     } = this.props;
 
@@ -75,6 +76,7 @@ class TableBodyCell extends React.Component {
           },
           className,
         )}
+        style={{...bodyStyles}}
         {...otherProps}>
         {children}
       </TableCell>,

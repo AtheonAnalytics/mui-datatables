@@ -1,6 +1,8 @@
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -64,6 +66,22 @@ const defaultTableStyles = theme => ({
     padding: '0',
     position: 'absolute',
     width: '1px',
+  },
+  tableTitleWrapper: {
+    width: '100%',
+  },
+  tableTitleTopLine: {
+    width: '100%',
+    height: 3,
+  },
+  tableTitleContainer: {
+    padding: '2px 10px',
+    height: 56,
+  },
+  tableTitleText: {
+    marginLeft: 4,
+    fontSize: 18,
+    padding: 10,
   },
   '@global': {
     '@media print': {
@@ -197,6 +215,7 @@ class MUIDataTable extends React.Component {
     options: {},
     data: [],
     columns: [],
+    customs: {},
   };
 
   state = {
@@ -223,13 +242,14 @@ class MUIDataTable extends React.Component {
     searchText: null,
   };
 
-  constructor() {
+  constructor(props) {
     super();
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
+    this.customs = Object.assign({}, this.defaultCustom(), props.customs);
   }
 
   UNSAFE_componentWillMount() {
@@ -261,6 +281,14 @@ class MUIDataTable extends React.Component {
       this.updateDividers();
     }
   }
+
+  defaultCustom = () => ({
+    titleProps: {
+      bgColor: '#fff',
+      textColor: '#000',
+    },
+    actions: [],
+  });
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -896,7 +924,6 @@ class MUIDataTable extends React.Component {
       }),
       () => {
         this.setTableAction('changeRowsPerPage');
-
         if (this.options.onChangeRowsPerPage) {
           this.options.onChangeRowsPerPage(this.state.rowsPerPage);
         }
@@ -1250,6 +1277,7 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
+    const { titleProps, actions, expandText } = this.customs;
     let responsiveClass;
 
     switch (this.options.responsive) {
@@ -1273,7 +1301,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {selectedRows.data.length ? (
+        {/* {selectedRows.data.length ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
@@ -1300,7 +1328,32 @@ class MUIDataTable extends React.Component {
               setTableAction={this.setTableAction}
             />
           )
-        )}
+        )} */}
+        <div className={classes.tableTitleWrapper} style={{ backgroundColor: titleProps.bgColor }}>
+          <div className={classes.tableTitleTopLine} style={{ backgroundColor: titleProps.textColor }} />
+          <Grid container className={classes.tableTitleContainer}>
+            <Grid container alignItems="center" item xs={9}>
+              <Typography className={classes.tableTitleText} style={{ color: titleProps.textColor }}>
+                {title}
+              </Typography>
+            </Grid>
+            {actions.length > 0 && selectedRows.data.length > 0 && (
+              <Grid container alignItems="center" item xs={3} justify={'flex-end'}>
+                {actions.map((action, index) => {
+                  const Component = action.component || 'button';
+                  const props = action.props || {};
+                  const text = action.text || 'action';
+                  const onClick = action.onClick || (() => {});
+                  return (
+                    <Component key={index} {...props} onClick={() => onClick(selectedRows)}>
+                      {text}
+                    </Component>
+                  );
+                })}
+              </Grid>
+            )}
+          </Grid>
+        </div>
         <TableFilterList
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
@@ -1348,6 +1401,8 @@ class MUIDataTable extends React.Component {
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
               filterList={filterList}
+              expandText={expandText}
+              noDataIndicator={this.options.noDataIndicator}
             />
           </MuiTable>
         </div>

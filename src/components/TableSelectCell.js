@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
-import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
   root: {},
@@ -14,13 +12,6 @@ const defaultSelectCellStyles = theme => ({
     top: '0px',
     left: '0px',
     zIndex: 100,
-  },
-  icon: {
-    cursor: 'pointer',
-    transition: 'transform 0.25s',
-  },
-  expanded: {
-    transform: 'rotate(90deg)',
   },
   hide: {
     visibility: 'hidden',
@@ -44,8 +35,6 @@ class TableSelectCell extends React.Component {
     onChange: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
-    /** Is expandable option enabled */
-    expandableOn: PropTypes.bool,
     /** Is selectable option enabled */
     selectableOn: PropTypes.string,
     /** Select cell disabled on/off */
@@ -53,8 +42,6 @@ class TableSelectCell extends React.Component {
 
   static defaultProps = {
     isHeaderCell: false,
-    isRowExpanded: false,
-    expandableOn: false,
     selectableOn: 'none',
   };
 
@@ -63,16 +50,13 @@ class TableSelectCell extends React.Component {
       classes,
       fixedHeader,
       isHeaderCell,
-      expandableOn,
       selectableOn,
-      isRowExpanded,
-      onExpand,
       isRowSelectable,
       selectableRowsHeader,
       ...otherProps
     } = this.props;
 
-    if (!expandableOn && selectableOn === 'none') return false;
+    if (selectableOn === 'none') return false;
 
     const cellClass = classNames({
       [classes.root]: true,
@@ -80,15 +64,13 @@ class TableSelectCell extends React.Component {
       [classes.headerCell]: isHeaderCell,
     });
 
-    const iconClass = classNames({
-      [classes.icon]: true,
-      [classes.hide]: isHeaderCell,
-      [classes.expanded]: isRowExpanded,
-    });
-
     const renderCheckBox = () => {
       if (isHeaderCell && (selectableOn !== 'multiple' || selectableRowsHeader === false)) {
         // only display the header checkbox for multiple selection.
+        return null;
+      }
+      if (!isRowSelectable) {
+        // Also hide select cell if the row is not selectable
         return null;
       }
       return (
@@ -107,14 +89,7 @@ class TableSelectCell extends React.Component {
 
     return (
       <TableCell className={cellClass} padding="checkbox">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && (
-            <IconButton onClick={onExpand} disabled={isHeaderCell}>
-              <KeyboardArrowRight id="expandable-button" className={iconClass} />
-            </IconButton>
-          )}
-          {selectableOn !== 'none' && renderCheckBox()}
-        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>{selectableOn !== 'none' && renderCheckBox()}</div>
       </TableCell>
     );
   }
