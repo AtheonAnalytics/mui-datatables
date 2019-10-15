@@ -6,6 +6,7 @@ import { findDOMNode } from 'react-dom';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
+import TableExpandCell from './TableExpandCell';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -46,7 +47,6 @@ class TableHead extends React.Component {
             indeterminate={isDeterminate}
             checked={isChecked}
             isHeaderCell={true}
-            expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
             selectableRowsHeader={options.selectableRowsHeader}
@@ -69,11 +69,18 @@ class TableHead extends React.Component {
                   hint={column.hint}
                   print={column.print}
                   options={options}
-                  column={column}>
+                  column={column}
+                  headStyles={column.headStyles || {}}
+                >
                   {column.label}
                 </TableHeadCell>
               )),
           )}
+          <TableExpandCell
+            isHeaderCell={true}
+            expandableOn={options.expandableRows}
+            fixedHeader={options.fixedHeader}
+          />
         </TableHeadRow>
       </MuiTableHead>
     );

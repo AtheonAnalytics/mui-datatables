@@ -91,7 +91,7 @@ class TableHeadCell extends React.Component {
 
   render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
-    const { children, classes, options, sortDirection, sort, hint, print, column } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, print, column, headStyles } = this.props;
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
 
@@ -109,7 +109,7 @@ class TableHeadCell extends React.Component {
     });
 
     return (
-      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection}>
+      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} style={{...headStyles}}>
         {options.sort && sort ? (
           <Tooltip
             title={
