@@ -517,8 +517,9 @@ class MUIDataTable extends React.Component {
 
         if (typeof column.customBodyRender === 'function') {
           const rowData = tableData[rowIndex].data;
+          const fullRowData = props.data[rowIndex];
           tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
-          const funcResult = column.customBodyRender(value, tableMeta);
+          const funcResult = column.customBodyRender(value, fullRowData, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
             value = funcResult.props.value;
@@ -679,8 +680,10 @@ class MUIDataTable extends React.Component {
           searchText: searchText,
         });
 
+        const fullRowData = this.props.data[rowIndex];
         const funcResult = column.customBodyRender(
           columnValue,
+          fullRowData,
           tableMeta,
           this.updateDataCol.bind(null, rowIndex, index),
         );
@@ -776,7 +779,8 @@ class MUIDataTable extends React.Component {
       let filterData = cloneDeep(prevState.filterData);
 
       const tableMeta = this.getTableMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
-      const funcResult = prevState.columns[index].customBodyRender(value, tableMeta);
+      const fullRowData = this.props.data[row];
+      const funcResult = prevState.columns[index].customBodyRender(value, fullRowData, tableMeta);
 
       const filterValue =
         React.isValidElement(funcResult) && funcResult.props.value
