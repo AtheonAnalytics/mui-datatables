@@ -48,6 +48,7 @@ class TableSelectCell extends React.Component {
   render() {
     const {
       classes,
+      className,
       fixedHeader,
       isHeaderCell,
       selectableOn,
@@ -62,6 +63,7 @@ class TableSelectCell extends React.Component {
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
+      ...(className ? { [className]: true } : {}),
     });
 
     const renderCheckBox = () => {

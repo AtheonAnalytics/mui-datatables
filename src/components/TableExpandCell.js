@@ -73,6 +73,7 @@ class TableExpandCell extends React.Component {
   render() {
     const {
       classes,
+      className,
       fixedHeader,
       isHeaderCell,
       expandableOn,
@@ -88,6 +89,7 @@ class TableExpandCell extends React.Component {
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
+      ...(className ? { [className]: true } : {}),
     });
 
     const iconClass = classNames({
