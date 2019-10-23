@@ -3,6 +3,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
+import SwapVert from '@material-ui/icons/SwapVert';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -29,7 +30,7 @@ const defaultHeadCellStyles = theme => ({
   },
   sortAction: {
     display: 'flex',
-    verticalAlign: 'top',
+    alignItems: 'center',
     cursor: 'pointer',
   },
   sortLabelRoot: {
@@ -37,6 +38,10 @@ const defaultHeadCellStyles = theme => ({
   },
   sortActive: {
     color: theme.palette.text.primary,
+  },
+  sortIndicator: {
+    paddingLeft: 4,
+    fontSize: 17,
   },
   toolButton: {
     display: 'flex',
@@ -88,6 +93,14 @@ class TableHeadCell extends React.Component {
   handleSortClick = () => {
     this.props.toggleSort(this.props.index);
   };
+
+  renderSortLabel = (sortDirection, sortLabelProps) => {
+    if (sortDirection === 'none') {
+      return <SwapVert className={this.props.classes.sortIndicator} />;
+    } else {
+      return <TableSortLabel {...sortLabelProps} />;
+    }
+  }
 
   render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
@@ -144,7 +157,7 @@ class TableHeadCell extends React.Component {
                 {children}
               </div>
               <div className={classes.sortAction}>
-                <TableSortLabel {...sortLabelProps} />
+                {this.renderSortLabel(sortDirection, sortLabelProps)}
                 {hint && (
                   <Tooltip
                     title={hint}
