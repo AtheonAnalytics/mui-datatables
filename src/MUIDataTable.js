@@ -1260,7 +1260,7 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { classes, className, title } = this.props;
+    const { classes, className, title, data: dataProp } = this.props;
     const {
       announceText,
       activeColumn,
@@ -1349,7 +1349,13 @@ class MUIDataTable extends React.Component {
                   const text = action.text || 'action';
                   const onClick = action.onClick || (() => {});
                   return (
-                    <Component key={index} {...props} onClick={() => onClick(selectedRows)}>
+                    <Component key={index} {...props} onClick={() => {
+                      if (selectedRows.data && selectedRows.data.length > 0) {
+                        const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
+                        return onClick(selectedRows, selectedData, dataProp);
+                      }
+                      return onClick(selectedRows, [], dataProp);
+                    }}>
                       {text}
                     </Component>
                   );
