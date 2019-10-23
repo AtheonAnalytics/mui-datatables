@@ -41,7 +41,7 @@ const defaultHeadCellStyles = theme => ({
   },
   sortIndicator: {
     paddingLeft: 4,
-    fontSize: 17,
+    fontSize: 24,
   },
   toolButton: {
     display: 'flex',
