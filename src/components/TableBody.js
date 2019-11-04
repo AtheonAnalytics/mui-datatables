@@ -215,6 +215,7 @@ class TableBody extends React.Component {
     let columnCount = visibleColCnt;
     if (options.selectableRows !== 'none') columnCount += 1;
     if (options.expandableRows) columnCount += 1;
+    const isExpandablePositionFirst = options.expandablePosition === 'first';
 
     return (
       <MuiTableBody>
@@ -236,6 +237,22 @@ class TableBody extends React.Component {
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
+                  {isExpandablePositionFirst && (
+                    <TableExpandCell
+                      className={isRowExpanded ? classes.noBorderBottom : null}
+                      onExpand={toggleExpandRow.bind(null, {
+                        index: this.getRowIndex(rowIndex),
+                        dataIndex: dataIndex,
+                      })}
+                      fixedHeader={options.fixedHeader}
+                      expandableOn={options.expandableRows}
+                      isRowExpanded={isRowExpanded}
+                      isRowExpandable={this.isRowExpandable(dataIndex)}
+                      id={'MUIDataTableExpandCell-' + dataIndex}
+                      expandText={expandText}
+                      hideText={options.hideExpandableText}
+                    />
+                  )}
                   <TableSelectCell
                     className={isRowExpanded ? classes.noBorderBottom : null}
                     onChange={this.handleRowSelect.bind(null, {
@@ -271,19 +288,22 @@ class TableBody extends React.Component {
                         </TableBodyCell>
                       ),
                   )}
-                  <TableExpandCell
-                    className={isRowExpanded ? classes.noBorderBottom : null}
-                    onExpand={toggleExpandRow.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
-                    fixedHeader={options.fixedHeader}
-                    expandableOn={options.expandableRows}
-                    isRowExpanded={isRowExpanded}
-                    isRowExpandable={this.isRowExpandable(dataIndex)}
-                    id={'MUIDataTableExpandCell-' + dataIndex}
-                    expandText={expandText}
-                  />
+                  {!isExpandablePositionFirst && (
+                    <TableExpandCell
+                      className={isRowExpanded ? classes.noBorderBottom : null}
+                      onExpand={toggleExpandRow.bind(null, {
+                        index: this.getRowIndex(rowIndex),
+                        dataIndex: dataIndex,
+                      })}
+                      fixedHeader={options.fixedHeader}
+                      expandableOn={options.expandableRows}
+                      isRowExpanded={isRowExpanded}
+                      isRowExpandable={this.isRowExpandable(dataIndex)}
+                      id={'MUIDataTableExpandCell-' + dataIndex}
+                      expandText={expandText}
+                      hideText={options.hideExpandableText}
+                    />
+                  )}
                 </TableBodyRow>
                 {isRowExpanded && options.renderExpandableRow(row, { rowIndex, dataIndex }, columnCount)}
               </React.Fragment>

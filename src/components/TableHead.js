@@ -36,11 +36,20 @@ class TableHead extends React.Component {
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;
     const isChecked = count > 0 && numSelected === count ? true : false;
+    const isExpandablePositionFirst = options.expandablePosition === 'first';
 
     return (
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
+          {isExpandablePositionFirst && (
+            <TableExpandCell
+              isHeaderCell={true}
+              expandableOn={options.expandableRows}
+              fixedHeader={options.fixedHeader}
+              hideText={options.hideExpandableText}
+            />
+          )}
           <TableSelectCell
             ref={el => setCellRef(0, findDOMNode(el))}
             onChange={this.handleRowSelect.bind(null)}
@@ -76,11 +85,14 @@ class TableHead extends React.Component {
                 </TableHeadCell>
               )),
           )}
-          <TableExpandCell
-            isHeaderCell={true}
-            expandableOn={options.expandableRows}
-            fixedHeader={options.fixedHeader}
-          />
+          {!isExpandablePositionFirst && (
+            <TableExpandCell
+              isHeaderCell={true}
+              expandableOn={options.expandableRows}
+              fixedHeader={options.fixedHeader}
+              hideText={options.hideExpandableText}
+            />
+          )}
         </TableHeadRow>
       </MuiTableHead>
     );

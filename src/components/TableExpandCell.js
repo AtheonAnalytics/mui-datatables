@@ -8,7 +8,15 @@ import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultExpandCellStyles = theme => ({
-  root: {
+  rootNoText: {
+    width: 30,
+    paddingRight: 0,
+    "& $expandContainer": {
+      marginRight: 0,
+      justifyContent: 'center',
+    }
+  },
+  rootWithText: {
     width: 140,
   },
   fixedHeader: {
@@ -81,12 +89,14 @@ class TableExpandCell extends React.Component {
       isRowExpandable,
       onExpand,
       expandText,
+      hideText,
     } = this.props;
 
     if (!expandableOn) return false;
 
     const cellClass = classNames({
-      [classes.root]: true,
+      [classes.rootNoText]: hideText,
+      [classes.rootWithText]: !hideText,
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
       ...(className ? { [className]: true } : {}),
@@ -102,10 +112,22 @@ class TableExpandCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox">
         <div className={classes.expandContainer}>
           {expandableOn && !isHeaderCell && isRowExpandable && (
-            <Button className={classes.expandButton} disableRipple onClick={onExpand} disabled={isHeaderCell}>
-              <Typography component="span" className={classes.expandText}>
-                {expandText}
-              </Typography>
+            <Button
+              className={classes.expandButton}
+              disableRipple
+              onClick={onExpand}
+              disabled={isHeaderCell}
+              style={hideText ? {
+                minWidth: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+              } : {}}
+            >
+              {!hideText && (
+                <Typography component="span" className={classes.expandText}>
+                  {expandText}
+                </Typography>
+              )}
               <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />
             </Button>
           )}
