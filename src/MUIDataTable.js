@@ -76,9 +76,9 @@ const defaultTableStyles = theme => ({
   },
   tableTitleContainer: {
     padding: '3px 10px',
+    minHeight: 56,
   },
   tableTitleText: {
-    marginLeft: 4,
     fontSize: 18,
     padding: 10,
   },
@@ -1341,7 +1341,7 @@ class MUIDataTable extends React.Component {
               </Typography>
             </Grid>
             {actions.length > 0 && selectedRows.data.length > 0 && (
-              <Grid container alignItems="center" item xs={4} lg={3} justify={'flex-end'}>
+              <Grid container alignItems="center" item xs={5} sm={4} justify={'flex-end'}>
                 {actions.map((action, index) => {
                   const Component = action.component || 'button';
                   const props = action.props || {};
