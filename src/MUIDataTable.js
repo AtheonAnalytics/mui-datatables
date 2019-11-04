@@ -1345,7 +1345,7 @@ class MUIDataTable extends React.Component {
                 {actions.map((action, index) => {
                   const Component = action.component || 'button';
                   const props = action.props || {};
-                  const text = action.text || 'action';
+                  const children = action.children || 'action';
                   const onClick = action.onClick || (() => {});
                   return (
                     <Component key={index} {...props} onClick={() => {
@@ -1355,7 +1355,7 @@ class MUIDataTable extends React.Component {
                       }
                       return onClick(selectedRows, [], dataProp);
                     }}>
-                      {text}
+                      {children}
                     </Component>
                   );
                 })}
