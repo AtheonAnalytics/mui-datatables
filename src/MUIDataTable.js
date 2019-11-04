@@ -75,8 +75,7 @@ const defaultTableStyles = theme => ({
     height: 3,
   },
   tableTitleContainer: {
-    padding: '2px 10px',
-    height: 56,
+    padding: '3px 10px',
   },
   tableTitleText: {
     marginLeft: 4,
@@ -1336,13 +1335,13 @@ class MUIDataTable extends React.Component {
         <div className={classes.tableTitleWrapper} style={{ backgroundColor: titleProps.bgColor }}>
           <div className={classes.tableTitleTopLine} style={{ backgroundColor: titleProps.textColor }} />
           <Grid container className={classes.tableTitleContainer}>
-            <Grid container alignItems="center" item xs={9}>
+            <Grid container alignItems="center" item xs={true}>
               <Typography className={classes.tableTitleText} style={{ color: titleProps.textColor }}>
                 {title}
               </Typography>
             </Grid>
             {actions.length > 0 && selectedRows.data.length > 0 && (
-              <Grid container alignItems="center" item xs={3} justify={'flex-end'}>
+              <Grid container alignItems="center" item xs={4} lg={3} justify={'flex-end'}>
                 {actions.map((action, index) => {
                   const Component = action.component || 'button';
                   const props = action.props || {};
