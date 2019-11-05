@@ -248,7 +248,6 @@ class MUIDataTable extends React.Component {
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
-    this.customs = Object.assign({}, this.defaultCustom(), props.customs);
   }
 
   UNSAFE_componentWillMount() {
@@ -1259,7 +1258,7 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { classes, className, title, data: dataProp } = this.props;
+    const { classes, className, title, data: dataProp, customs: customsProp } = this.props;
     const {
       announceText,
       activeColumn,
@@ -1280,9 +1279,11 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
-    const { titleProps, actions, expandText } = this.customs;
-    let responsiveClass;
 
+    const customs = Object.assign({}, this.defaultCustom(), customsProp);
+    const { titleProps, actions, expandText } = customs;
+
+    let responsiveClass;
     switch (this.options.responsive) {
       // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
       case 'scroll':
