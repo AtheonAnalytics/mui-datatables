@@ -79,8 +79,7 @@ class TableHead extends React.Component {
                   print={column.print}
                   options={options}
                   column={column}
-                  headStyles={column.headStyles || {}}
-                >
+                  headStyles={column.headStyles || {}}>
                   {column.label}
                 </TableHeadCell>
               )),

@@ -76,7 +76,7 @@ class TableBodyCell extends React.Component {
           },
           className,
         )}
-        style={{...bodyStyles}}
+        style={{ ...bodyStyles }}
         {...otherProps}>
         {children}
       </TableCell>,

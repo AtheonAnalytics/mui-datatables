@@ -272,8 +272,8 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {
-                              className: isRowExpanded ? classes.noBorderBottom : null
-                            })}
+                                className: isRowExpanded ? classes.noBorderBottom : null,
+                              })}
                           data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
@@ -282,8 +282,7 @@ class TableBody extends React.Component {
                           print={columns[columnIndex].print}
                           options={options}
                           bodyStyles={columns[columnIndex].bodyStyles || {}}
-                          key={columnIndex}
-                        >
+                          key={columnIndex}>
                           {column}
                         </TableBodyCell>
                       ),
@@ -311,11 +310,7 @@ class TableBody extends React.Component {
           })
         ) : (
           <TableBodyRow options={options}>
-            <TableBodyCell
-              colSpan={columnCount}
-              options={options}
-              colIndex={0}
-              rowIndex={0}>
+            <TableBodyCell colSpan={columnCount} options={options} colIndex={0} rowIndex={0}>
               <Typography variant="subtitle1" className={classes.emptyTitle}>
                 {noDataIndicator || options.textLabels.body.noMatch}
               </Typography>

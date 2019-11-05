@@ -1348,13 +1348,16 @@ class MUIDataTable extends React.Component {
                   const children = action.children || 'action';
                   const onClick = action.onClick || (() => {});
                   return (
-                    <Component key={index} {...props} onClick={() => {
-                      if (selectedRows.data && selectedRows.data.length > 0) {
-                        const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
-                        return onClick(selectedRows, selectedData, dataProp);
-                      }
-                      return onClick(selectedRows, [], dataProp);
-                    }}>
+                    <Component
+                      key={index}
+                      {...props}
+                      onClick={() => {
+                        if (selectedRows.data && selectedRows.data.length > 0) {
+                          const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
+                          return onClick(selectedRows, selectedData, dataProp);
+                        }
+                        return onClick(selectedRows, [], dataProp);
+                      }}>
                       {children}
                     </Component>
                   );

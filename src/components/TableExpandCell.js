@@ -11,10 +11,10 @@ const defaultExpandCellStyles = theme => ({
   rootNoText: {
     width: 30,
     paddingRight: 0,
-    "& $expandContainer": {
+    '& $expandContainer': {
       marginRight: 0,
       justifyContent: 'center',
-    }
+    },
   },
   rootWithText: {
     width: 140,
@@ -117,12 +117,15 @@ class TableExpandCell extends React.Component {
               disableRipple
               onClick={onExpand}
               disabled={isHeaderCell}
-              style={hideText ? {
-                minWidth: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-              } : {}}
-            >
+              style={
+                hideText
+                  ? {
+                      minWidth: 0,
+                      paddingLeft: 0,
+                      paddingRight: 0,
+                    }
+                  : {}
+              }>
               {!hideText && (
                 <Typography component="span" className={classes.expandText}>
                   {expandText}

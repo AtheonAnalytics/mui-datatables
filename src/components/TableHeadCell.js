@@ -100,7 +100,7 @@ class TableHeadCell extends React.Component {
     } else {
       return <TableSortLabel {...sortLabelProps} />;
     }
-  }
+  };
 
   render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
@@ -122,7 +122,7 @@ class TableHeadCell extends React.Component {
     });
 
     return (
-      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} style={{...headStyles}}>
+      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} style={{ ...headStyles }}>
         {options.sort && sort ? (
           <Tooltip
             title={
