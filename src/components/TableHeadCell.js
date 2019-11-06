@@ -27,11 +27,12 @@ const defaultHeadCellStyles = theme => ({
   },
   data: {
     display: 'inline-block',
+    pointerEvents: 'none',
   },
   sortAction: {
     display: 'flex',
     alignItems: 'center',
-    cursor: 'pointer',
+    pointerEvents: 'none',
   },
   sortLabelRoot: {
     height: '10px',
@@ -44,7 +45,7 @@ const defaultHeadCellStyles = theme => ({
     fontSize: 24,
   },
   toolButton: {
-    display: 'flex',
+    display: 'inline-flex',
     outline: 'none',
     cursor: 'pointer',
   },
