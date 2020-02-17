@@ -1337,9 +1337,9 @@ class MUIDataTable extends React.Component {
           <div className={classes.tableTitleTopLine} style={{ backgroundColor: titleProps.textColor }} />
           <Grid container className={classes.tableTitleContainer}>
             <Grid container alignItems="center" item xs={true}>
-              <Typography className={classes.tableTitleText} style={{ color: titleProps.textColor }}>
+              <div className={classes.tableTitleText} style={{ color: titleProps.textColor }}>
                 {title}
-              </Typography>
+              </div>
             </Grid>
             {actions.length > 0 && selectedRows.data.length > 0 && (
               <Grid container alignItems="center" item xs={5} sm={4} justify={'flex-end'}>
