@@ -1257,6 +1257,41 @@ class MUIDataTable extends React.Component {
     };
   }
 
+  renderTableActions = actions => {
+    const { selectedRows } = this.state;
+    const { data: dataProp } = this.props;
+    if (selectedRows.data && selectedRows.data.length > 0) {
+      const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
+      if (actions instanceof Array && actions.length > 0) {
+        return (
+          <Grid container alignItems="center" item xs={5} sm={4} justify={'flex-end'}>
+            {actions.map((action, index) => {
+              const Component = action.component || 'button';
+              const props = action.props || {};
+              const children = action.children || 'action';
+              const onClick = action.onClick || (() => {});
+              if (typeof action.render === 'function') {
+                return action.render(selectedRows, selectedData, this.state);
+              }
+              return (
+                <Component
+                  key={index}
+                  {...props}
+                  onClick={() => onClick(selectedRows, selectedData, dataProp)}>
+                  {children}
+                </Component>
+              );
+            })}
+          </Grid>
+        );
+      }
+      if (typeof actions === "function") {
+        return actions(selectedRows, selectedData, this.state);
+      }
+    }
+    return null;
+  }
+
   render() {
     const { classes, className, title, data: dataProp, customs: customsProp } = this.props;
     const {
@@ -1341,30 +1376,7 @@ class MUIDataTable extends React.Component {
                 {title}
               </div>
             </Grid>
-            {actions.length > 0 && selectedRows.data.length > 0 && (
-              <Grid container alignItems="center" item xs={5} sm={4} justify={'flex-end'}>
-                {actions.map((action, index) => {
-                  const Component = action.component || 'button';
-                  const props = action.props || {};
-                  const children = action.children || 'action';
-                  const onClick = action.onClick || (() => {});
-                  return (
-                    <Component
-                      key={index}
-                      {...props}
-                      onClick={() => {
-                        if (selectedRows.data && selectedRows.data.length > 0) {
-                          const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
-                          return onClick(selectedRows, selectedData, dataProp);
-                        }
-                        return onClick(selectedRows, [], dataProp);
-                      }}>
-                      {children}
-                    </Component>
-                  );
-                })}
-              </Grid>
-            )}
+            {this.renderTableActions(actions)}
           </Grid>
         </div>
         <TableFilterList
