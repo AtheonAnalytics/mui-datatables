@@ -251,6 +251,9 @@ class TableBody extends React.Component {
                       id={'MUIDataTableExpandCell-' + dataIndex}
                       expandText={expandText}
                       hideText={options.hideExpandableText}
+                      row={row}
+                      dataIndex={dataIndex}
+                      rowIndex={rowIndex}
                     />
                   )}
                   <TableSelectCell
@@ -301,6 +304,9 @@ class TableBody extends React.Component {
                       id={'MUIDataTableExpandCell-' + dataIndex}
                       expandText={expandText}
                       hideText={options.hideExpandableText}
+                      row={row}
+                      dataIndex={dataIndex}
+                      rowIndex={rowIndex}
                     />
                   )}
                 </TableBodyRow>

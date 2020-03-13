@@ -90,6 +90,9 @@ class TableExpandCell extends React.Component {
       onExpand,
       expandText,
       hideText,
+      row,
+      dataIndex,
+      rowIndex
     } = this.props;
 
     if (!expandableOn) return false;
@@ -128,7 +131,7 @@ class TableExpandCell extends React.Component {
               }>
               {!hideText && (
                 <Typography component="span" className={classes.expandText}>
-                  {expandText}
+                  {typeof expandText === "function" ? expandText(row, { rowIndex, dataIndex }) : expandText}
                 </Typography>
               )}
               <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />
