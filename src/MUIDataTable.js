@@ -285,7 +285,7 @@ class MUIDataTable extends React.Component {
       bgColor: '#fff',
       textColor: '#000',
     },
-    actions: [],
+    renderActions: () => null,
   });
 
   updateOptions(options, props) {
@@ -1257,37 +1257,15 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  renderTableActions = actions => {
+  renderTableActions = renderActions => {
     const { selectedRows } = this.state;
     const { data: dataProp } = this.props;
-    if (selectedRows.data && selectedRows.data.length > 0) {
+    if (typeof renderActions === "function") {
       const selectedData = selectedRows.data.map(entry => dataProp[entry.dataIndex]);
-      if (actions instanceof Array && actions.length > 0) {
-        return (
-          <Grid container alignItems="center" item xs={5} sm={4} justify={'flex-end'}>
-            {actions.map((action, index) => {
-              const Component = action.component || 'button';
-              const props = action.props || {};
-              const children = action.children || 'action';
-              const onClick = action.onClick || (() => {});
-              if (typeof action.render === 'function') {
-                return action.render(selectedRows, selectedData, this.state);
-              }
-              return (
-                <Component
-                  key={index}
-                  {...props}
-                  onClick={() => onClick(selectedRows, selectedData, dataProp)}>
-                  {children}
-                </Component>
-              );
-            })}
-          </Grid>
-        );
-      }
-      if (typeof actions === "function") {
-        return actions(selectedRows, selectedData, this.state);
-      }
+      return renderActions(selectedRows, selectedData, {
+        state: this.state,
+        props: this.props
+      });
     }
     return null;
   }
@@ -1316,7 +1294,7 @@ class MUIDataTable extends React.Component {
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
 
     const customs = Object.assign({}, this.defaultCustom(), customsProp);
-    const { titleProps, actions, expandText } = customs;
+    const { titleProps, renderActions, expandText } = customs;
 
     let responsiveClass;
     switch (this.options.responsive) {
@@ -1376,7 +1354,7 @@ class MUIDataTable extends React.Component {
                 {title}
               </div>
             </Grid>
-            {this.renderTableActions(actions)}
+            {this.renderTableActions(renderActions)}
           </Grid>
         </div>
         <TableFilterList
