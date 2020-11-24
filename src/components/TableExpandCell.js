@@ -76,6 +76,7 @@ class TableExpandCell extends React.Component {
     isRowExpanded: false,
     expandableOn: false,
     expandText: 'Expand',
+    expandBtnProps: {}
   };
 
   render() {
@@ -89,6 +90,7 @@ class TableExpandCell extends React.Component {
       isRowExpandable,
       onExpand,
       expandText,
+      expandBtnProps,
       hideText,
       row,
       dataIndex,
@@ -128,7 +130,11 @@ class TableExpandCell extends React.Component {
                       paddingRight: 0,
                     }
                   : {}
-              }>
+              }
+              {...(typeof expandBtnProps === "function"
+                ? expandBtnProps(row, { rowIndex, dataIndex })
+                : expandBtnProps)}
+            >
               {!hideText && (
                 <Typography component="span" className={classes.expandText}>
                   {typeof expandText === "function" ? expandText(row, { rowIndex, dataIndex }) : expandText}

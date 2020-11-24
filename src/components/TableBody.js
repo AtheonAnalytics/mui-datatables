@@ -209,7 +209,15 @@ class TableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, toggleExpandRow, options, expandText, noDataIndicator } = this.props;
+    const {
+      classes,
+      columns,
+      toggleExpandRow,
+      options,
+      expandText,
+      expandBtnProps,
+      noDataIndicator
+    } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
     let columnCount = visibleColCnt;
@@ -250,6 +258,7 @@ class TableBody extends React.Component {
                       isRowExpandable={this.isRowExpandable(dataIndex)}
                       id={'MUIDataTableExpandCell-' + dataIndex}
                       expandText={expandText}
+                      expandBtnProps={expandBtnProps}
                       hideText={options.hideExpandableText}
                       row={row}
                       dataIndex={dataIndex}
@@ -303,6 +312,7 @@ class TableBody extends React.Component {
                       isRowExpandable={this.isRowExpandable(dataIndex)}
                       id={'MUIDataTableExpandCell-' + dataIndex}
                       expandText={expandText}
+                      expandBtnProps={expandBtnProps}
                       hideText={options.hideExpandableText}
                       row={row}
                       dataIndex={dataIndex}

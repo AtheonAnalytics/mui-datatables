@@ -1294,7 +1294,7 @@ class MUIDataTable extends React.Component {
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
 
     const customs = Object.assign({}, this.defaultCustom(), customsProp);
-    const { titleProps, renderActions, expandText } = customs;
+    const { titleProps, renderActions, expandText, expandBtnProps } = customs;
 
     let responsiveClass;
     switch (this.options.responsive) {
@@ -1405,6 +1405,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
               filterList={filterList}
               expandText={expandText}
+              expandBtnProps={expandBtnProps}
               noDataIndicator={this.options.noDataIndicator}
             />
           </MuiTable>
