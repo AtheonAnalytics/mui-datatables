@@ -75,8 +75,7 @@ class TableExpandCell extends React.Component {
     isHeaderCell: false,
     isRowExpanded: false,
     expandableOn: false,
-    expandText: 'Expand',
-    expandBtnProps: {}
+    expandBtn: {}
   };
 
   render() {
@@ -89,13 +88,13 @@ class TableExpandCell extends React.Component {
       isRowExpanded,
       isRowExpandable,
       onExpand,
-      expandText,
-      expandBtnProps,
+      expandBtn,
       hideText,
       row,
       dataIndex,
       rowIndex
     } = this.props;
+    const { text = "Expand", props, onClick: onExpandClick } = expandBtn;
 
     if (!expandableOn) return false;
 
@@ -120,7 +119,12 @@ class TableExpandCell extends React.Component {
             <Button
               className={classes.expandButton}
               disableRipple
-              onClick={onExpand}
+              onClick={(...p) => {
+                onExpand(...p);
+                if (typeof onExpandClick === "function") {
+                  onExpandClick(row, { rowIndex, dataIndex }, this.props);
+                }
+              }}
               disabled={isHeaderCell}
               style={
                 hideText
@@ -131,13 +135,13 @@ class TableExpandCell extends React.Component {
                     }
                   : {}
               }
-              {...(typeof expandBtnProps === "function"
-                ? expandBtnProps(row, { rowIndex, dataIndex })
-                : expandBtnProps)}
+              {...(typeof props === "function"
+                ? props(row, { rowIndex, dataIndex })
+                : props)}
             >
               {!hideText && (
                 <Typography component="span" className={classes.expandText}>
-                  {typeof expandText === "function" ? expandText(row, { rowIndex, dataIndex }) : expandText}
+                  {typeof text === "function" ? text(row, { rowIndex, dataIndex }) : text}
                 </Typography>
               )}
               <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />

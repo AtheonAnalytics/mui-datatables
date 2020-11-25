@@ -214,8 +214,7 @@ class TableBody extends React.Component {
       columns,
       toggleExpandRow,
       options,
-      expandText,
-      expandBtnProps,
+      expandBtn,
       noDataIndicator
     } = this.props;
     const tableRows = this.buildRows();
@@ -257,8 +256,7 @@ class TableBody extends React.Component {
                       isRowExpanded={isRowExpanded}
                       isRowExpandable={this.isRowExpandable(dataIndex)}
                       id={'MUIDataTableExpandCell-' + dataIndex}
-                      expandText={expandText}
-                      expandBtnProps={expandBtnProps}
+                      expandBtn={expandBtn}
                       hideText={options.hideExpandableText}
                       row={row}
                       dataIndex={dataIndex}
@@ -311,8 +309,7 @@ class TableBody extends React.Component {
                       isRowExpanded={isRowExpanded}
                       isRowExpandable={this.isRowExpandable(dataIndex)}
                       id={'MUIDataTableExpandCell-' + dataIndex}
-                      expandText={expandText}
-                      expandBtnProps={expandBtnProps}
+                      expandBtn={expandBtn}
                       hideText={options.hideExpandableText}
                       row={row}
                       dataIndex={dataIndex}
