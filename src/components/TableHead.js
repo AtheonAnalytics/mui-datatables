@@ -31,11 +31,11 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, options, data, setCellRef, selectedRows, selectableRowCount } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
-    const isDeterminate = numSelected > 0 && numSelected < count;
-    const isChecked = count > 0 && numSelected === count ? true : false;
+    const isDeterminate = numSelected > 0 && numSelected < selectableRowCount;
+    const isChecked = selectableRowCount > 0 && numSelected === selectableRowCount ? true : false;
     const isExpandablePositionFirst = options.expandablePosition === 'first';
 
     return (

@@ -1287,8 +1287,14 @@ class MUIDataTable extends React.Component {
       searchText,
       serverSideFilterList,
     } = this.state;
+    const { selectableRows, isRowSelectable } = this.options;
 
     const rowCount = this.state.count || displayData.length;
+    const selectableRowCount = selectableRows === "none"
+      ? 0
+      : (typeof isRowSelectable === "function"
+        ? dataProp.filter((item, index) => isRowSelectable(index)).length
+        : dataProp.length);
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
@@ -1382,6 +1388,7 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
+              selectableRowCount={selectableRowCount}
               page={page}
               rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
