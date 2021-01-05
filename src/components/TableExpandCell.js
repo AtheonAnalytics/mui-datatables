@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Tooltip from "@material-ui/core/Tooltip";
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -94,7 +95,7 @@ class TableExpandCell extends React.Component {
       dataIndex,
       rowIndex
     } = this.props;
-    const { text = "Expand", props, onClick: onExpandClick } = expandBtn;
+    const { text = "Expand", tooltip, props, onClick: onExpandClick } = expandBtn;
 
     if (!expandableOn) return false;
 
@@ -144,7 +145,13 @@ class TableExpandCell extends React.Component {
                   {typeof text === "function" ? text(row, { rowIndex, dataIndex }) : text}
                 </Typography>
               )}
-              <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />
+              {tooltip ? (
+                <Tooltip title={typeof tooltip === "function" ? tooltip(row, { rowIndex, dataIndex }) : tooltip}>
+                  <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />
+                </Tooltip>
+              ) : (
+                <KeyboardArrowRight id="expandable-button" size="small" className={iconClass} />
+              )}
             </Button>
           )}
         </div>
