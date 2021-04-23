@@ -181,7 +181,7 @@ class TableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          <div className={classes.sortAction}>
+          <div className={classes.data}>
             {children}
             {hint && (
               <Tooltip
